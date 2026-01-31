@@ -45,7 +45,7 @@ export const createTask = async (
   }
 };
 
-export const getTaskById = async (
+export const deleteTaskById = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
@@ -53,15 +53,16 @@ export const getTaskById = async (
   try {
     const task = db.prepare("SELECT * FROM tasks WHERE id = ?").get(id) as Task;
     if (task) {
-      res.json(task);
+      db.prepare("DELETE FROM tasks WHERE id = ?").run(id);
+      res.status(204).json(task);
     } else {
       res.status(404).json({ error: "Task no encontrada" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener la tarea" });
+    res.status(500).json({ error: "Error al eliminar la tarea" });
   }
 };
-
+  
 export const updateTask = async (
   req: Request<{ id: string }, {}, UpdateTaskBody>,
   res: Response,
