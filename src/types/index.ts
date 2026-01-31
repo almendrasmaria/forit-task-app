@@ -1,20 +1,20 @@
 export interface Task {
-  id: number;
+  id: string;
   title: string;
   description: string | null;
   completed: boolean | number;
-  created_at: string;
-  updated_at: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface CreateTaskBody {
   title: string;
   description?: string;
-  completed?: boolean;
+  completed?: boolean | number;
 }
 
 export interface UpdateTaskBody {
   title?: string;
   description?: string;
-  completed?: boolean;
+  completed?: boolean | number;
 }

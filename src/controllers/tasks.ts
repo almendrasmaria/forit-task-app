@@ -22,6 +22,9 @@ export const createTask = async (
 ): Promise<void> => {
   const { title, description, completed } = req.body;
 
+  // generar ID único
+  const id = crypto.randomUUID();
+
   try {
     if (!title) {
       res.status(400).json({ error: "El título es obligatorio" });
@@ -29,13 +32,13 @@ export const createTask = async (
     }
 
     const stmt = db.prepare(
-      "INSERT INTO tasks (title, description, completed) VALUES (?, ?, ?)",
+      "INSERT INTO tasks (id, title, description, completed) VALUES (?, ?, ?, ?)",
     );
-    const result = stmt.run(title, description || "", completed ? 1 : 0);
+    const result = stmt.run(id, title, description || "", completed ? 1 : 0);
 
     const newTask = db
       .prepare("SELECT * FROM tasks WHERE id = ?")
-      .get(result.lastInsertRowid) as Task;
+      .get(id) as Task;
     res.status(201).json(newTask);
   } catch (error) {
     res.status(500).json({ error: "Error al crear la tarea" });
