@@ -6,3 +6,6 @@ data/*.db
 data/*.db-journal
 data/*.db-shm
 data/*.db-wal
+
+# Ignorar archivos de compilación de TypeScript
+dist/
