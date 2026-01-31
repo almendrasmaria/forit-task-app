@@ -12,3 +12,9 @@ export interface CreateTaskBody {
   description?: string;
   completed?: boolean;
 }
+
+export interface UpdateTaskBody {
+  title?: string;
+  description?: string;
+  completed?: boolean;
+}
