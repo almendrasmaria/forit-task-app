@@ -1,8 +1,15 @@
 import Database from 'better-sqlite3';
 import type { Database as DatabaseType } from 'better-sqlite3';
 import { join } from 'path';
+import { existsSync, mkdirSync } from 'fs';
 
-const dbPath = join(process.cwd(), 'data', 'database.db');
+const dataDir = join(process.cwd(), 'data');
+
+if (!existsSync(dataDir)) {
+  mkdirSync(dataDir, { recursive: true });
+}
+
+const dbPath = join(dataDir, 'database.db');
 
 const db: DatabaseType = new Database(dbPath);
 
