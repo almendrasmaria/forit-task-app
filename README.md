@@ -1,9 +1,6 @@
-# Backend
+# Task App - Next.js
 
-## Requisitos previos
-
-- Node.js (v20 o superior)
-- pnpm o npm
+Aplicación de tareas con Next.js.
 
 ## Instalación
 
@@ -11,19 +8,23 @@
 pnpm install
 ```
 
-## Ejecutar la aplicación
-
-### Modo desarrollo
+## Desarrollo
 
 ```bash
 pnpm dev
 ```
+## API Endpoints
 
-## Variables de entorno
+| Método | Endpoint         | Descripción            |
+|--------|------------------|------------------------|
+| GET    | /api/tasks       | Obtener todas las tareas |
+| POST   | /api/tasks       | Crear una nueva tarea  |
+| PUT    | /api/tasks/:id   | Actualizar una tarea   |
+| DELETE | /api/tasks/:id   | Eliminar una tarea     |
 
-Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
+## Build
 
-```env
-PORT=3000
-DATABASE_URL=url_de_base_de_datos
+```bash
+pnpm build
+pnpm start
 ```

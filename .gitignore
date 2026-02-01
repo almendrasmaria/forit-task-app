@@ -1,11 +1,30 @@
-node_modules/
+# dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# local env files
+.env*.local
 .env
 
-# Ignorar el archivo de base de datos
-data/*.db
-data/*.db-journal
-data/*.db-shm
-data/*.db-wal
+# vercel
+.vercel
 
-# Ignorar archivos de compilación de TypeScript
-dist/
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# database
+data/*.db
+data/*.db-wal
+data/*.db-shm
