@@ -1,11 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import type { Task } from "@/types";
 
 import PageShell from "@/components/layout/PageShell";
 import Header from "@/components/layout/Header";
 import TaskToolbar from "@/components/tasks/TaskToolbar";
-import TaskEmptyState from "@/components/tasks/TaskEmptyState";
+import TaskList from "@/components/tasks/TaskList";
+
+const mockTasks = [
+  {
+    id: "1",
+    title: "Preparar presentación mensual",
+    description: "Incluir métricas y proyecciones",
+    completed: false,
+  },
+  {
+    id: "2",
+    title: "Revisar correos pendientes",
+    description: "Responder mensajes importantes",
+    completed: true,
+  },
+] as Task[];
 
 export default function Page() {
   const [query, setQuery] = useState("");
@@ -22,7 +38,13 @@ export default function Page() {
           onNewTask={() => setOpen(true)}
         />
 
-        <TaskEmptyState />
+        <div className="mt-6">
+          <TaskList
+            tasks={mockTasks}
+            onToggleComplete={() => {}}
+            onDelete={() => {}}
+          />
+        </div>
       </div>
     </PageShell>
   );
