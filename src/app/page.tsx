@@ -21,14 +21,32 @@ export default function Page() {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
 
+  const [mode, setMode] = useState<"create" | "edit">("create");
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return tasks;
-    return tasks.filter((t) => {
-      const title = (t.title ?? "").toLowerCase();
-      return title.includes(q);
-    });
+    return tasks.filter((t) => (t.title ?? "").toLowerCase().includes(q));
   }, [tasks, query]);
+
+  const openCreate = () => {
+    setMode("create");
+    setEditingTask(null);
+    setOpen(true);
+  };
+
+  const openEdit = (task: Task) => {
+    setMode("edit");
+    setEditingTask(task);
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+    setEditingTask(null);
+    setMode("create");
+  };
 
   const handleCreate = async (values: {
     title: string;
@@ -36,7 +54,17 @@ export default function Page() {
     completed: boolean;
   }) => {
     await createTask(values as CreateTaskInput);
-    setOpen(false);
+    closeModal();
+  };
+
+  const handleEdit = async (values: {
+    title: string;
+    description?: string;
+    completed: boolean;
+  }) => {
+    if (!editingTask) return;
+    await updateTask(String(editingTask.id), values as Partial<Task>);
+    closeModal();
   };
 
   return (
@@ -47,19 +75,18 @@ export default function Page() {
         <TaskToolbar
           query={query}
           onQueryChange={setQuery}
-          onNewTask={() => setOpen(true)}
+          onNewTask={openCreate}
         />
 
-        <div className="mt-6">
-          {loading ? (
-            <p className="text-sm text-white/60">Cargando…</p>
-          ) : error ? (
+       <div className="mt-6">
+          {error ? (
             <p className="text-sm text-red-400">Error: {error}</p>
           ) : filtered.length === 0 ? (
             <TaskEmptyState />
           ) : (
             <TaskList
               tasks={filtered}
+              onEdit={openEdit}
               onDelete={(id) => deleteTask(String(id))}
               onToggleComplete={(id, completed) =>
                 updateTask(String(id), { completed } as Partial<Task>)
@@ -67,12 +94,21 @@ export default function Page() {
             />
           )}
         </div>
-
+          
         <TaskModal
           open={open}
-          mode="create"
-          onClose={() => setOpen(false)}
-          onSubmit={handleCreate}
+          mode={mode}
+          initialValues={
+            mode === "edit" && editingTask
+              ? {
+                  title: editingTask.title,
+                  description: editingTask.description ?? undefined,
+                  completed: Boolean((editingTask as any).completed),
+                }
+              : undefined
+          }
+          onClose={closeModal}
+          onSubmit={mode === "edit" ? handleEdit : handleCreate}
         />
       </div>
     </PageShell>
