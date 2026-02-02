@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function TaskItem({ task, onToggleComplete, onEdit, onDelete }: Props) {
-  const completed = Boolean((task as any).completed);
+  const completed = task.completed;
 
   return (
     <div

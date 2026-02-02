@@ -15,8 +15,7 @@ import { useTasks } from "@/hooks/useTasks";
 type CreateTaskInput = Omit<Task, "id" | "created_at" | "updated_at">;
 
 export default function Page() {
-  const { tasks, loading, error, createTask, updateTask, deleteTask } =
-    useTasks();
+  const { tasks, error, createTask, updateTask, deleteTask } = useTasks();
 
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -78,7 +77,7 @@ export default function Page() {
           onNewTask={openCreate}
         />
 
-       <div className="mt-6">
+        <div className="mt-6">
           {error ? (
             <p className="text-sm text-red-400">Error: {error}</p>
           ) : filtered.length === 0 ? (
@@ -94,7 +93,7 @@ export default function Page() {
             />
           )}
         </div>
-          
+
         <TaskModal
           open={open}
           mode={mode}
@@ -102,14 +101,16 @@ export default function Page() {
             mode === "edit" && editingTask
               ? {
                   title: editingTask.title,
-                  description: editingTask.description ?? undefined,
-                  completed: Boolean((editingTask as any).completed),
+                  description:
+                    editingTask.description === null ? undefined : editingTask.description,
+                  completed: Boolean(editingTask.completed),
                 }
               : undefined
           }
           onClose={closeModal}
           onSubmit={mode === "edit" ? handleEdit : handleCreate}
         />
+
       </div>
     </PageShell>
   );
