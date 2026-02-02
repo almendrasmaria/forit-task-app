@@ -7,6 +7,7 @@ import PageShell from "@/components/layout/PageShell";
 import Header from "@/components/layout/Header";
 import TaskToolbar from "@/components/tasks/TaskToolbar";
 import TaskList from "@/components/tasks/TaskList";
+import TaskModal from "@/components/tasks/TaskModal";
 
 const mockTasks = [
   {
@@ -45,6 +46,15 @@ export default function Page() {
             onDelete={() => {}}
           />
         </div>
+
+        <TaskModal
+          open={open}
+          mode="create"
+          onClose={() => setOpen(false)}
+          onSubmit={async () => {
+            setOpen(false);
+          }}
+        />
       </div>
     </PageShell>
   );
