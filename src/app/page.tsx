@@ -5,6 +5,7 @@ import { useState } from "react";
 import PageShell from "@/components/layout/PageShell";
 import Header from "@/components/layout/Header";
 import TaskToolbar from "@/components/tasks/TaskToolbar";
+import TaskEmptyState from "@/components/tasks/TaskEmptyState";
 
 export default function Page() {
   const [query, setQuery] = useState("");
@@ -20,6 +21,8 @@ export default function Page() {
           onQueryChange={setQuery}
           onNewTask={() => setOpen(true)}
         />
+
+        <TaskEmptyState />
       </div>
     </PageShell>
   );
