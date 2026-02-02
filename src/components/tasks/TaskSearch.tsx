@@ -9,7 +9,7 @@ type Props = {
 
 export default function TaskSearch({ value, onChange }: Props) {
   return (
-    <div className="flex h-12 w-full items-center gap-2 rounded-xl bg-white/5 px-4 ring-1 ring-white/10 focus-within:ring-violet-500/40 sm:max-w-[520px]">
+    <div className="flex h-12 w-full items-center gap-2 rounded-xl bg-white/5 px-4 ring-1 ring-white/10 focus-within:ring-violet-500/40 sm:max-w-130]">
       <FiSearch className="text-white/50" />
       <input
         value={value}
