@@ -13,11 +13,13 @@ import TaskModal from "@/components/tasks/TaskModal";
 import { useTasks } from "@/hooks/useTasks";
 
 type CreateTaskInput = Omit<Task, "id" | "created_at" | "updated_at">;
+type Filter = "all" | "pending" | "completed";
 
 export default function Page() {
   const { tasks, error, createTask, updateTask, deleteTask } = useTasks();
 
   const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<Filter>("all");
   const [open, setOpen] = useState(false);
 
   const [mode, setMode] = useState<"create" | "edit">("create");
@@ -25,9 +27,18 @@ export default function Page() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return tasks;
-    return tasks.filter((t) => (t.title ?? "").toLowerCase().includes(q));
-  }, [tasks, query]);
+
+    const byStatus = tasks.filter((t) => {
+      const done = Boolean(t.completed);
+      if (filter === "all") return true;
+      if (filter === "pending") return !done;
+      return done;
+    });
+
+    if (!q) return byStatus;
+
+    return byStatus.filter((t) => (t.title ?? "").toLowerCase().includes(q));
+  }, [tasks, query, filter]);
 
   const openCreate = () => {
     setMode("create");
@@ -75,6 +86,8 @@ export default function Page() {
           query={query}
           onQueryChange={setQuery}
           onNewTask={openCreate}
+          filter={filter}
+          onFilterChange={setFilter}
         />
 
         <div className="mt-6">
@@ -102,7 +115,9 @@ export default function Page() {
               ? {
                   title: editingTask.title,
                   description:
-                    editingTask.description === null ? undefined : editingTask.description,
+                    editingTask.description === null
+                      ? undefined
+                      : editingTask.description,
                   completed: Boolean(editingTask.completed),
                 }
               : undefined
@@ -110,7 +125,6 @@ export default function Page() {
           onClose={closeModal}
           onSubmit={mode === "edit" ? handleEdit : handleCreate}
         />
-
       </div>
     </PageShell>
   );
